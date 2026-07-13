@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
@@ -11,6 +11,7 @@ import {
   ArrowUpRight 
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { LodgeIncidentModal } from './LodgeIncidentModal';
 
 interface Incident {
   id: number;
@@ -41,6 +42,7 @@ const getRelativeTime = (isoString: string) => {
 };
 
 export const DashboardView: React.FC = () => {
+  const [isLodgeOpen, setIsLodgeOpen] = useState(false);
   const { data: incidents = [], isLoading, error } = useQuery<Incident[]>({
     queryKey: ['incidents'],
     queryFn: async () => {
@@ -103,13 +105,21 @@ export const DashboardView: React.FC = () => {
           <h1 className="text-3xl font-bold text-white tracking-tight">Dashboard Overview</h1>
           <p className="text-sm text-slate-500 mt-1">Real-time intelligence and threat orchestration.</p>
         </div>
-        <Link 
-          to="/incidents" 
-          className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded flex items-center space-x-2 transition-colors shadow-lg shadow-blue-600/10"
-        >
-          <span>Incident Command Center</span>
-          <ArrowUpRight className="w-4 h-4" />
-        </Link>
+        <div className="flex items-center space-x-3">
+          <button
+            onClick={() => setIsLodgeOpen(true)}
+            className="px-4 py-2 bg-rose-600 hover:bg-rose-750 text-white text-sm font-semibold rounded flex items-center space-x-2 transition-colors shadow-lg shadow-rose-600/10"
+          >
+            <span>+ Lodge Incident</span>
+          </button>
+          <Link 
+            to="/incidents" 
+            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded flex items-center space-x-2 transition-colors shadow-lg shadow-blue-600/10"
+          >
+            <span>Incident Command Center</span>
+            <ArrowUpRight className="w-4 h-4" />
+          </Link>
+        </div>
       </div>
 
       {/* Grid: 4 Stats Cards */}
@@ -330,6 +340,7 @@ export const DashboardView: React.FC = () => {
         </div>
 
       </div>
+      <LodgeIncidentModal isOpen={isLodgeOpen} onClose={() => setIsLodgeOpen(false)} />
     </main>
   );
 };

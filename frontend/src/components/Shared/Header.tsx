@@ -11,6 +11,8 @@ export const Header: React.FC<HeaderProps> = () => {
 
   const isDashboardActive = location.pathname === '/' || location.pathname === '/dashboard';
   const isIncidentsActive = location.pathname.startsWith('/incidents');
+  const isSecurityActive = location.pathname === '/security';
+  const isLogsActive = location.pathname === '/logs';
 
   return (
     <header className="h-16 border-b border-darkBorder bg-darkBg px-6 flex items-center justify-between select-none">
@@ -51,12 +53,32 @@ export const Header: React.FC<HeaderProps> = () => {
               <span className="absolute bottom-0 left-0 w-full h-[2px] bg-blue-500 shadow-[0_0_8px_#3b82f6]" />
             )}
           </Link>
-          <span className="text-sm font-medium text-slate-400 hover:text-slate-200 cursor-not-allowed py-5">
+          <Link
+            to="/security"
+            className={`text-sm font-medium transition-colors py-5 relative ${
+              isSecurityActive
+                ? 'text-white'
+                : 'text-slate-400 hover:text-slate-200'
+            }`}
+          >
             Security
-          </span>
-          <span className="text-sm font-medium text-slate-400 hover:text-slate-200 cursor-not-allowed py-5">
+            {isSecurityActive && (
+              <span className="absolute bottom-0 left-0 w-full h-[2px] bg-blue-500 shadow-[0_0_8px_#3b82f6]" />
+            )}
+          </Link>
+          <Link
+            to="/logs"
+            className={`text-sm font-medium transition-colors py-5 relative ${
+              isLogsActive
+                ? 'text-white'
+                : 'text-slate-400 hover:text-slate-200'
+            }`}
+          >
             Logs
-          </span>
+            {isLogsActive && (
+              <span className="absolute bottom-0 left-0 w-full h-[2px] bg-blue-500 shadow-[0_0_8px_#3b82f6]" />
+            )}
+          </Link>
         </nav>
       </div>
 

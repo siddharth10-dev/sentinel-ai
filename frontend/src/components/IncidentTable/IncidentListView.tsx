@@ -12,6 +12,7 @@ import {
   ShieldCheck, 
   AlertTriangle 
 } from 'lucide-react';
+import { LodgeIncidentModal } from '../Dashboard/LodgeIncidentModal';
 
 interface Incident {
   id: number;
@@ -47,6 +48,7 @@ export const IncidentListView: React.FC = () => {
   const [statusFilter, setStatusFilter] = useState('All');
   const [severityFilter, setSeverityFilter] = useState('All');
   const [currentPage, setCurrentPage] = useState(1);
+  const [isLodgeOpen, setIsLodgeOpen] = useState(false);
   const itemsPerPage = 5;
 
   const { data: incidents = [], isLoading, error } = useQuery<Incident[]>({
@@ -185,13 +187,21 @@ export const IncidentListView: React.FC = () => {
           </div>
         </div>
 
-        <button 
-          onClick={handleExportCSV}
-          className="px-4 py-2 bg-slate-900/60 border border-darkBorder rounded text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800/40 transition-all flex items-center space-x-2"
-        >
-          <Download className="w-3.5 h-3.5" />
-          <span>Export CSV</span>
-        </button>
+        <div className="flex items-center space-x-3">
+          <button
+            onClick={() => setIsLodgeOpen(true)}
+            className="px-4 py-2 bg-rose-600 hover:bg-rose-755 text-white text-xs font-bold rounded flex items-center space-x-1.5 transition-colors shadow-lg shadow-rose-600/10"
+          >
+            <span>+ Lodge Incident</span>
+          </button>
+          <button 
+            onClick={handleExportCSV}
+            className="px-4 py-2 bg-slate-900/60 border border-darkBorder rounded text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800/40 transition-all flex items-center space-x-2"
+          >
+            <Download className="w-3.5 h-3.5" />
+            <span>Export CSV</span>
+          </button>
+        </div>
       </div>
 
       {/* Incidents Table Container */}
@@ -351,7 +361,7 @@ export const IncidentListView: React.FC = () => {
           </div>
         </div>
       </div>
-
+      <LodgeIncidentModal isOpen={isLodgeOpen} onClose={() => setIsLodgeOpen(false)} />
     </main>
   );
 };

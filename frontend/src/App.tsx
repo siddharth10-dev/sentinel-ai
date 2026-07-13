@@ -4,6 +4,9 @@ import { Header } from './components/Shared/Header';
 import { DashboardView } from './components/Dashboard/DashboardView';
 import { IncidentListView } from './components/IncidentTable/IncidentListView';
 import { IncidentDetailsView } from './components/IncidentDetails/IncidentDetailsView';
+import { AnalyticsView } from './pages/AnalyticsView';
+import { SecurityPostureView } from './pages/SecurityPostureView';
+import { LogStreamView } from './pages/LogStreamView';
 
 // Initialize React Query Client
 const queryClient = new QueryClient({
@@ -30,6 +33,9 @@ function App() {
               <Route path="/dashboard" element={<Navigate to="/" replace />} />
               <Route path="/incidents" element={<IncidentListView />} />
               <Route path="/incidents/:id" element={<IncidentDetailsView />} />
+              <Route path="/analytics" element={<AnalyticsView />} />
+              <Route path="/security" element={<SecurityPostureView />} />
+              <Route path="/logs" element={<LogStreamView />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </div>

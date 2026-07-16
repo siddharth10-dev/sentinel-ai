@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { LodgeIncidentModal } from './LodgeIncidentModal';
+import { API_BASE_URL } from '../../config';
 
 interface Incident {
   id: number;
@@ -46,7 +47,7 @@ export const DashboardView: React.FC = () => {
   const { data: incidents = [], isLoading, error } = useQuery<Incident[]>({
     queryKey: ['incidents'],
     queryFn: async () => {
-      const res = await axios.get('http://localhost:8000/incidents');
+      const res = await axios.get(`${API_BASE_URL}/incidents`);
       return res.data;
     },
     refetchInterval: 5000, // Poll every 5s for dashboard real-time feel
@@ -103,7 +104,7 @@ export const DashboardView: React.FC = () => {
       <div className="flex-1 bg-darkBg p-8 flex flex-col justify-center items-center text-rose-500">
         <AlertTriangle className="w-8 h-8 mb-4 animate-bounce" />
         <p className="text-sm font-semibold">Failed to fetch backend data.</p>
-        <p className="text-xs text-slate-500 mt-2">Is the Kyro backend running at http://localhost:8000?</p>
+        <p className="text-xs text-slate-500 mt-2">Is the Kyro backend running at {API_BASE_URL}?</p>
       </div>
     );
   }

@@ -7,6 +7,8 @@ import {
 } from 'recharts';
 import { AlertOctagon, TrendingUp, Cpu, Activity } from 'lucide-react';
 
+import { API_BASE_URL } from '../config';
+
 interface Incident {
   id: number;
   service: string;
@@ -19,7 +21,7 @@ export const AnalyticsView: React.FC = () => {
   const { data: incidents = [], isLoading } = useQuery<Incident[]>({
     queryKey: ['incidents'],
     queryFn: async () => {
-      const res = await axios.get('http://localhost:8000/incidents');
+      const res = await axios.get(`${API_BASE_URL}/incidents`);
       return res.data;
     }
   });

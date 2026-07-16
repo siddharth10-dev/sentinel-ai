@@ -14,6 +14,7 @@ import {
   XCircle
 } from 'lucide-react';
 import { Sidebar } from '../Shared/Sidebar';
+import { API_BASE_URL } from '../../config';
 
 interface Incident {
   id: number;
@@ -73,7 +74,7 @@ export const IncidentDetailsView: React.FC = () => {
   const { data: incident, isLoading, error } = useQuery<Incident>({
     queryKey: ['incident', id],
     queryFn: async () => {
-      const res = await axios.get(`http://localhost:8000/incidents/${id}`);
+      const res = await axios.get(`${API_BASE_URL}/incidents/${id}`);
       return res.data;
     },
     refetchInterval: (query) => {
@@ -98,7 +99,7 @@ export const IncidentDetailsView: React.FC = () => {
   // Mutations
   const approveMutation = useMutation({
     mutationFn: async () => {
-      const res = await axios.post(`http://localhost:8000/incidents/${id}/approve`);
+      const res = await axios.post(`${API_BASE_URL}/incidents/${id}/approve`);
       return res.data;
     },
     onSuccess: () => {
@@ -109,7 +110,7 @@ export const IncidentDetailsView: React.FC = () => {
 
   const rejectMutation = useMutation({
     mutationFn: async () => {
-      const res = await axios.post(`http://localhost:8000/incidents/${id}/reject`);
+      const res = await axios.post(`${API_BASE_URL}/incidents/${id}/reject`);
       return res.data;
     },
     onSuccess: () => {

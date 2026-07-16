@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { X, Play, Loader2, ShieldAlert, Activity, Database, Server, CreditCard, Cpu } from 'lucide-react';
+import { X, Loader2, ShieldAlert, Activity, Database, Server, CreditCard, Cpu } from 'lucide-react';
+
+import { API_BASE_URL, SIMULATOR_BASE_URL } from '../../config';
 
 interface LodgeIncidentModalProps {
   isOpen: boolean;
@@ -18,7 +20,7 @@ export const LodgeIncidentModal: React.FC<LodgeIncidentModalProps> = ({ isOpen, 
     setMessage('');
     try {
       // 1. Trigger the checkout-service simulation
-      await axios.post(`http://localhost:8001/simulate/${endpoint}?enable=true`);
+      await axios.post(`${SIMULATOR_BASE_URL}/simulate/${endpoint}?enable=true`);
       
       // 2. Since Alertmanager requires Docker, we send a mock Alertmanager webhook
       // to the Kyro backend so you can watch the autonomous flow end-to-end.
@@ -56,7 +58,7 @@ export const LodgeIncidentModal: React.FC<LodgeIncidentModalProps> = ({ isOpen, 
       };
 
       const alertDetails = mockAlerts[endpoint];
-      const res = await axios.post('http://localhost:8000/incident', {
+      const res = await axios.post(`${API_BASE_URL}/incident`, {
         alerts: [
           {
             status: 'firing',

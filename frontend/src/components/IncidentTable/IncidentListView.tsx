@@ -10,9 +10,11 @@ import {
   Cloud, 
   Activity, 
   ShieldCheck, 
-  AlertTriangle 
+  AlertTriangle,
+  CheckCircle2
 } from 'lucide-react';
 import { LodgeIncidentModal } from '../Dashboard/LodgeIncidentModal';
+import { API_BASE_URL } from '../../config';
 
 interface Incident {
   id: number;
@@ -54,7 +56,7 @@ export const IncidentListView: React.FC = () => {
   const { data: incidents = [], isLoading, error } = useQuery<Incident[]>({
     queryKey: ['incidents'],
     queryFn: async () => {
-      const res = await axios.get('http://localhost:8000/incidents');
+      const res = await axios.get(`${API_BASE_URL}/incidents`);
       return res.data;
     },
     refetchInterval: 5000,

@@ -47,6 +47,30 @@ def on_startup():
 def read_root():
     return {"status": "UP"}
 
+@app.get("/test-db")
+def test_db():
+    import os
+    import sqlalchemy
+    db_url = os.getenv("DATABASE_URL", "")
+    masked_url = db_url
+    try:
+        if "@" in db_url:
+            parts = db_url.split("@")
+            prefix = parts[0]
+            if ":" in prefix:
+                subparts = prefix.rsplit(":", 1)
+                masked_url = f"{subparts[0]}:***@{parts[1]}"
+    except Exception:
+        masked_url = "error masking url"
+        
+    try:
+        engine = sqlalchemy.create_engine(db_url)
+        with engine.connect() as conn:
+            result = conn.execute(sqlalchemy.text("SELECT 1")).fetchall()
+        return {"status": "success", "url": masked_url, "result": str(result)}
+    except Exception as e:
+        return {"status": "error", "url": masked_url, "error": str(e)}
+
 def run_investigation(incident_id: int, initial_state: dict):
     logger.info(f"Starting async investigation for incident {incident_id}")
     try:

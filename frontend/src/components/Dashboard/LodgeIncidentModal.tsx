@@ -19,8 +19,12 @@ export const LodgeIncidentModal: React.FC<LodgeIncidentModalProps> = ({ isOpen, 
     setLoading(type);
     setMessage('');
     try {
-      // 1. Trigger the checkout-service simulation
-      await axios.post(`${SIMULATOR_BASE_URL}/simulate/${endpoint}?enable=true`);
+      // 1. Trigger the checkout-service simulation (optional/best effort)
+      try {
+        await axios.post(`${SIMULATOR_BASE_URL}/simulate/${endpoint}?enable=true`);
+      } catch (simErr) {
+        console.warn("Simulator offline, proceeding with mock Alertmanager webhook.", simErr);
+      }
       
       // 2. Since Alertmanager requires Docker, we send a mock Alertmanager webhook
       // to the Kyro backend so you can watch the autonomous flow end-to-end.
